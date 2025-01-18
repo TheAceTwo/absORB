@@ -19,6 +19,7 @@ public class MoteScript : MonoBehaviour {
     private Vector2 gravityForce; // used also in InitVelocity()
 
     // Variables for OutOfBounds()
+    public bool enableOOB = true;
     private float OOBDrag = 0.005f; // The value of the drag force applied by the rigidbody when the mote is outside the set boundaries defined below
     private float OOBForce = 0.01f; // The amount of force applied to the rigidbody when the mote is outside the set boundaries defined below
     private float xBoundary = 20; private float yBoundary = 20; // The coordinates used in OutOfBounds()
@@ -30,6 +31,7 @@ public class MoteScript : MonoBehaviour {
     private float moteSpawnForce = 0.02f; // The amount of force to apply to the cloned mote
     private float playerLaunchForce = 1.2f; // Originally I was using the moteSpawnForce to push the player mote away with the same force - like how equal and opposite reactions work in real life - but that didn't give me the effect I was looking for
     private float holdTime; // the time the left mouse button it held down
+    public bool isInfinity = false;
 
     // Sound variables
     public AudioClip CollisionSound; // clips hold the sound
@@ -251,7 +253,7 @@ public class MoteScript : MonoBehaviour {
         // TrueForAll: https://stackoverflow.com/questions/17897728/how-to-use-trueforall#:~:text=bool%20alltrue%20%3D%20listOfBools.TrueForAll(b%20%3D%3E%20b)%3B
     }
     public void LevelComplete() {
-        if ((!uiSpawned)) { // if the UI hasn't already been spawned
+        if ((!uiSpawned)&&(isInfinity)) { // if the UI hasn't already been spawned & the world is not an infinity level
             Time.timeScale = 1; // set the time scale to 1 so the scene transitions work right
             allowTimeScaler = false; // turn off time scaling
             allowMenus = false; // disallow menus
@@ -294,20 +296,31 @@ public class MoteScript : MonoBehaviour {
         }
     }
     void OutOfBounds() { // Defines what will happen when the mote is past a certain distance (xBoundary & yBoundary) in each direction.
-        if (-xBoundary > rb.transform.position.x) { // if the mote's coordinates are larger than the boundary variables
-            rb.AddForce(Vector2.right*(OOBForce)/moteSize); // add force back twords the middle of the level
-            rb.drag = OOBDrag; // add a drag to the mote so that it dosen't start accelerating
-        } else if (xBoundary < rb.transform.position.x) {
-            rb.AddForce(Vector2.left*(OOBForce)/moteSize);
-            rb.drag = OOBDrag;
-        } else if (-yBoundary > rb.transform.position.y) {
-            rb.AddForce(Vector2.up*(OOBForce)/moteSize);
-            rb.drag = OOBDrag;
-        } else if (yBoundary < rb.transform.position.y) {
-            rb.AddForce(Vector2.down*(OOBForce)/moteSize);
-            rb.drag = OOBDrag;
-        } else {
-            rb.drag = 0.00f; // Universal drag constant. All motes will always feel this drag on their rigidbody while inside the defined boundaries. I don't want to set it to a variable because there is no reason it should ever not be 0 unless I want to change how the entire game feels
+        if (enableOOB) {
+            if (-xBoundary > rb.transform.position.x)
+            { // if the mote's coordinates are larger than the boundary variables
+                rb.AddForce(Vector2.right * (OOBForce) / moteSize); // add force back twords the middle of the level
+                rb.linearDamping = OOBDrag; // add a drag to the mote so that it dosen't start accelerating
+            }
+            else if (xBoundary < rb.transform.position.x)
+            {
+                rb.AddForce(Vector2.left * (OOBForce) / moteSize);
+                rb.linearDamping = OOBDrag;
+            }
+            else if (-yBoundary > rb.transform.position.y)
+            {
+                rb.AddForce(Vector2.up * (OOBForce) / moteSize);
+                rb.linearDamping = OOBDrag;
+            }
+            else if (yBoundary < rb.transform.position.y)
+            {
+                rb.AddForce(Vector2.down * (OOBForce) / moteSize);
+                rb.linearDamping = OOBDrag;
+            }
+            else
+            {
+                rb.linearDamping = 0.00f; // Universal drag constant. All motes will always feel this drag on their rigidbody while inside the defined boundaries. I don't want to set it to a variable because there is no reason it should ever not be 0 unless I want to change how the entire game feels
+            }
         }
     }
     void Gravity(MoteScript affectedObject) { // Calculate and apply a simulated gravitational force to all motes
@@ -365,7 +378,7 @@ public class MoteScript : MonoBehaviour {
     }
 
     void SaveLevel() { // save the level's completion state to a persistent data file. 
-        if (SceneManager.GetActiveScene().name != "Tutorial") {
+        if ((SceneManager.GetActiveScene().name != "Tutorial") && (SceneManager.GetActiveScene().name != "Infinity")){
             int currentLevelInt = int.Parse(SceneManager.GetActiveScene().name); // turn the string into an int so we can use it in the next line
             // It doesn't work when iterating through a list. Trust me, I will jump on the opertunity to not have to type out every single leve once I figure out how exactly I can do that without breaking the feature entirely.
             if (currentLevelInt == 1) {LevelSaver.lvl1 = true;}

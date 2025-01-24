@@ -261,7 +261,6 @@ public class MoteScript : MonoBehaviour {
             LVLCompleteSFX.Play(); // play a cool sound effect
             Instantiate(LvlCompleteUI, Canvas.transform.position, Quaternion.identity, Canvas.transform); // spawn the lavel completed UI
         }
-        SaveLevel();
     }
     public void MenuOpened() { // callable function for opening the menu
         if (allowMenus) { // if the menu is allowed to be opened right now
@@ -377,38 +376,6 @@ public class MoteScript : MonoBehaviour {
         } else {Debug.Log("a mote is confused as to its size relative to the player"); rend.material = redmat;} // if your comparitive size is neither larger, smaller, or equal to that of the player, stay confused but also be red
     }
 
-    void SaveLevel() { // save the level's completion state to a persistent data file. 
-        if ((SceneManager.GetActiveScene().name != "Tutorial") && (SceneManager.GetActiveScene().name != "Infinity")){
-            int currentLevelInt = int.Parse(SceneManager.GetActiveScene().name); // turn the string into an int so we can use it in the next line
-            // It doesn't work when iterating through a list. Trust me, I will jump on the opertunity to not have to type out every single leve once I figure out how exactly I can do that without breaking the feature entirely.
-            if (currentLevelInt == 1) {LevelSaver.lvl1 = true;}
-            if (currentLevelInt == 2) {LevelSaver.lvl2 = true;}
-            if (currentLevelInt == 3) {LevelSaver.lvl3 = true;}
-            if (currentLevelInt == 4) {LevelSaver.lvl4 = true;}
-            if (currentLevelInt == 5) {LevelSaver.lvl5 = true;}
-            if (currentLevelInt == 6) {LevelSaver.lvl6 = true;}
-            if (currentLevelInt == 7) {LevelSaver.lvl7 = true;}
-            if (currentLevelInt == 8) {LevelSaver.lvl8 = true;}
-            if (currentLevelInt == 9) {LevelSaver.lvl9 = true;}
-            if (currentLevelInt == 10) {LevelSaver.lvl10 = true;}
-            if (currentLevelInt == 11) {LevelSaver.lvl11 = true;}
-            if (currentLevelInt == 12) {LevelSaver.lvl12 = true;}
-            if (currentLevelInt == 13) {LevelSaver.lvl13 = true;}
-            if (currentLevelInt == 14) {LevelSaver.lvl14 = true;}
-            if (currentLevelInt == 15) {LevelSaver.lvl15 = true;}
-            if (currentLevelInt == 16) {LevelSaver.lvl16 = true;}
-            if (currentLevelInt == 17) {LevelSaver.lvl17 = true;}
-            if (currentLevelInt == 18) {LevelSaver.lvl18 = true;}
-            if (currentLevelInt == 19) {LevelSaver.lvl19 = true;}
-            if (currentLevelInt == 20) {LevelSaver.lvl20 = true;}
-            if (currentLevelInt == 21) {LevelSaver.lvl21 = true;}
-            if (currentLevelInt == 22) {LevelSaver.lvl22 = true;}
-            if (currentLevelInt == 23) {LevelSaver.lvl23 = true;}
-            if (currentLevelInt == 24) {LevelSaver.lvl24 = true;}
-        } else {
-            LevelSaver.lvl0 = true; // tutorial is level 0
-        }
-    }
     void CinemachineZoom() {
         if (!Paused && allowZoom) {
             Vector2 scrollDelta = Input.mouseScrollDelta; // make it a variable for ease of access

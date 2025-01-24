@@ -42,10 +42,10 @@ EditorBuildSettings:
     path: Assets/Scenes/PresetLevels/11.unity
     guid: 506d9d841ba0ca14eaad55688d449220
   - enabled: 1
-    path: Assets/Scenes/Tutorial.unity
+    path: Assets/Scenes/PresetLevels/Tutorial.unity
     guid: 112a8e413e9da9340abed1820ca345fb
   - enabled: 1
-    path: Assets/Scenes/Infinity.unity
+    path: Assets/Scenes/Main.unity
     guid: d09ed47bbdc0e514ca85737f7f21db9b
   m_configObjects:
     com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: 8ea1f2b3ef992984f9e46bc748314d97, type: 2}
